@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-role-ohmyzsh"
+      ansible.builtin.include_role:
+        name: "ansible-role-ohmyzsh"
+      vars:
+        ohmyzsh_theme: "{{ lookup('env', 'ohmyzsh_theme') | default('robbyrussell', True) }}"
+        ohmyzsh_plugins: "{{ lookup('env', 'ohmyzsh_plugins') | default(['git', 'ansible'], True) }}"
+        ohmyzsh_users:
+          - root
+          - foo
+          - bar

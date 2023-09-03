@@ -1,0 +1,15 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Ubuntu/Debian | refresh apt repository
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Linux | Create test users
+      ansible.builtin.user:
+        name: "{{ item }}"
+      loop:
+        - foo
+        - bar

@@ -1,0 +1,39 @@
+---
+- name: Setup | Package requirements
+  ansible.builtin.package:
+    name: "{{ package_requirements[ansible_facts['os_family']] | default(default_package_requirements) }}"
+    state: present
+
+- name: Get users information
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: "{{ zsh_bin_path }}"
+    state: present
+  register: ohmyzsh_users_register
+  loop: "{{ ohmyzsh_users }}"
+
+- name: Extract only 'name', 'home' and 'group' fields from ohmyzsh_users_register variable
+  ansible.builtin.set_fact:
+    ohmyzsh_users_information: "{{ ohmyzsh_users_information | default([]) + [{'name': item['name'], 'home': item['home'], 'group': item['group']}] }}"
+  no_log: true
+  loop: "{{ ohmyzsh_users_register.results }}"
+
+- name: Setup | Download ohmyzsh
+  ansible.builtin.git:
+    repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
+    dest: "{{ item['home'] }}/.oh-my-zsh"
+    depth: 1
+    update: no
+  notify: Configure .zshrc
+  loop: "{{ ohmyzsh_users_information }}"
+
+- name: Setup user permission on Git repository
+  ansible.builtin.file:
+    path: "{{ item['home'] }}/.oh-my-zsh"
+    owner: "{{ item['name'] }}"
+    group: "{{ item['group'] }}"
+    recurse: yes
+  loop: "{{ ohmyzsh_users_information }}"
+
+- name: Setup | Flush handler
+  ansible.builtin.meta: flush_handlers

@@ -1,0 +1,53 @@
+galaxy_info:
+  role_name: ohmyzsh
+  author: diodonfrost
+  company: diodonfrost
+  description: Ansible role for install ohmyzsh
+  license: license Apache
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: EL
+      versions:
+        - "9"
+        - "8"
+        - "7"
+    - name: Fedora
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - bookworm
+        - bullseye
+        - buster
+    - name: Ubuntu
+      versions:
+        - focal
+        - bionic
+        - xenial
+    - name: Amazon Linux
+      versions:
+        - all
+    - name: opensuse
+      versions:
+        - all
+    - name: ArchLinux
+      versions:
+        - all
+    - name: MacOSX
+      versions:
+        - all
+    - name: FreeBSD
+      versions:
+        - all
+    - name: OpenBSD
+      versions:
+        - all
+
+  galaxy_tags:
+    - shell
+    - system
+    - packaging
+    - git
+
+dependencies: []

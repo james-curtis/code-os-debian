@@ -1,0 +1,10 @@
+---
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+platforms:
+  - name: openbsd
+    box: generic/openbsd7
+    memory: 2048
+    cpus: 2

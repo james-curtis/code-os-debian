@@ -1,0 +1,7 @@
+---
+# vars file for ansible-role-ohmyzsh
+default_package_requirements:
+  - git
+  - zsh
+
+zsh_bin_path: /bin/zsh

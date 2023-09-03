@@ -1,0 +1,41 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Verify | Get custom ansible role variable
+      ansible.builtin.set_fact:
+        ohmyzsh_theme: "{{ lookup('env', 'ohmyzsh_theme') | default('robbyrussell', True) }}"
+        ohmyzsh_plugins: "{{ lookup('env', 'ohmyzsh_plugins') | default(['git', 'ansible'], True) }}"
+
+    - name: Verify | ohmyzsh folder shoud be present
+      ansible.builtin.file:
+        path: ~/.oh-my-zsh
+      register: ohmyzsh_file
+
+    - name: Verify | zsh shell should be use
+      ansible.builtin.user:
+        name: "{{ item }}"
+        shell: /usr/local/bin/zsh
+      register: ohmyzsh_shell
+      loop:
+        - root
+        - foo
+        - bar
+
+    - name: Verify | ohmyzsh theme should be present
+      ansible.builtin.command: grep 'ZSH_THEME="{{ ohmyzsh_theme }}"' ~/.zshrc
+      register: ohmyzsh_theme
+
+    - name: Verify | ohmyzsh plugins should be present
+      ansible.builtin.command: grep 'plugins=({{ ohmyzsh_plugins | join(" ") }})' ~/.zshrc
+      register: ohmyzsh_plugins
+
+    - name: Verify | Verify commands outputs
+      ansible.builtin.assert:
+        that:
+          - not ohmyzsh_file.changed
+          - not ohmyzsh_shell.changed
+          - ohmyzsh_theme.rc == 0
+          - ohmyzsh_plugins.rc == 0
+        success_msg: "All tests passed"

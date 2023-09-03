@@ -1,0 +1,9 @@
+---
+- name: Plugins | Set ohmyzsh plugins to used
+  ansible.builtin.lineinfile:
+    path: "{{ item['home'] }}/.zshrc"
+    regexp: '^plugins='
+    line: 'plugins=({{ ohmyzsh_plugins | join(" ") }})'
+    owner: "{{ item['name'] }}"
+    group: "{{ item['group'] }}"
+  loop: "{{ ohmyzsh_users_information }}"

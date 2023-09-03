@@ -1,0 +1,62 @@
+name: molecule
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 18 * * sun'
+
+jobs:
+  build:
+    name: ${{ matrix.image }} zsh_plugin ${{ matrix.zsh_plugin }}
+    runs-on: ubuntu-22.04
+    env:
+      docker_namespace: ghcr.io/diodonfrost/docker-ansible
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - almalinux:8
+          - rockylinux:8
+          - centos:stream8
+          - fedora:39
+          - fedora:38
+          - ubuntu:22.04
+          - ubuntu:20.04
+          - debian:12
+          - debian:11
+          - oraclelinux:8
+          - amazonlinux:2
+          - opensuse:leap
+          - archlinux:latest
+        zsh_plugin:
+          - zsh
+          - ohmyzsh
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install Molecule
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Test Ansible role
+        run: molecule test
+        env:
+          namespace: ${{ env.docker_namespace }}
+          image: ansible-${{ matrix.image }}
+          zsh_plugin: ${{ matrix.zsh_plugin }}
+
+      - name: Test Ansible role with check_mode enable
+        run: molecule check
+        env:
+          namespace: ${{ env.docker_namespace }}
+          image: ansible-${{ matrix.image }}
+          zsh_plugin: ${{ matrix.zsh_plugin }}

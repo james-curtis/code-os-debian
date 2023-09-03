@@ -1,0 +1,12 @@
+---
+# handlers file for ansible-role-ohmyzsh
+
+- name: Configure .zshrc
+  ansible.builtin.copy:
+    src: "{{ item['home'] }}/.oh-my-zsh/templates/zshrc.zsh-template"
+    dest: "{{ item['home'] }}/.zshrc"
+    owner: "{{ item['name'] }}"
+    group: "{{ item['group'] }}"
+    mode: '0644'
+    remote_src: yes
+  with_items: "{{ ohmyzsh_users_information }}"

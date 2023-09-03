@@ -1,0 +1,21 @@
+---
+# tasks file for ansible-role-ohmyzsh
+
+- name: Include OS specific variables.
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_system }}.yml"
+        - main.yml
+      paths:
+        - 'vars'
+
+- name: Install ohmyzsh
+  ansible.builtin.include_tasks: "setup-ohmyzsh.yml"
+
+- name: Defined ohmyzsh themes
+  ansible.builtin.include_tasks: "themes.yml"
+
+- name: Install ohmyzsh plugins
+  ansible.builtin.include_tasks: "plugins.yml"

@@ -1,0 +1,10 @@
+package_requirements:
+  Gentoo: 
+    - dev-vcs/git
+    - app-shells/zsh
+
+default_package_requirements:
+  - git
+  - zsh
+
+zsh_bin_path: /usr/bin/zsh
