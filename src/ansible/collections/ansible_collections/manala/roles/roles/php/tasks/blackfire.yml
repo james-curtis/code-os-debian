@@ -1,0 +1,41 @@
+---
+
+- name: Blackfire > Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    install_recommends: false
+    update_cache: true
+    cache_valid_time: 3600
+  loop:
+    -
+      - blackfire-agent
+      - blackfire-php
+  notify:
+    - Restart php fpm
+
+- name: Blackfire > Agent config template
+  ansible.builtin.template:
+    src: "{{ manala_php_blackfire_agent_config_template | default('blackfire/agent/_default.j2', true) }}"
+    dest: "{{ manala_php_blackfire_agent_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_php_blackfire_agent_config_template
+    or manala_php_blackfire_agent_config
+  notify:
+    - Restart php blackfire agent
+
+- name: Blackfire > Client config template
+  ansible.builtin.template:
+    src: "{{ manala_php_blackfire_client_config_template | default('blackfire/client/_default.j2', true) }}"
+    dest: "{{ manala_php_blackfire_client_config_file }}"
+    mode: "0644"
+  when: manala_php_blackfire_client_config_template
+    or manala_php_blackfire_client_config
+
+- name: Blackfire > Services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - blackfire-agent

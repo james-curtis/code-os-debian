@@ -1,0 +1,11 @@
+{%- set environment = manala_haproxy_environment -%}
+
+{%- if environment is mapping -%}
+
+{{ environment | manala.roles.environment }}
+
+{%- else -%}
+
+{{ environment }}
+
+{%- endif -%}

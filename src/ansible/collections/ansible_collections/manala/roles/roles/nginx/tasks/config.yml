@@ -1,0 +1,13 @@
+---
+
+- name: Config > Template
+  ansible.builtin.template:
+    src: "{{ manala_nginx_config_template | default('config/_default.j2', true) }}"
+    dest: "{{ manala_nginx_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_nginx_config_template
+    or manala_nginx_config
+  notify:
+    - Restart nginx

@@ -1,0 +1,22 @@
+---
+
+- name: Packages > Apt
+  ansible.builtin.apt:  # noqa: args[module]
+    deb: "{{ item.package if (item.deb) else omit }}"
+    name: "{{ item.package if (not item.deb) else omit }}"
+    state: "{{ item.state }}"
+    # Present
+    install_recommends: false
+    update_cache: true
+    cache_valid_time: "{{ manala_apt_cache_valid_time }}"
+    # Absent
+    purge: true
+    autoremove: true
+  loop: |
+    {{ query(
+      'manala.roles.apt_packages',
+      manala_apt_packages,
+      wantstate='present',
+      wantmap=True,
+      wantdeb=True,
+    ) }}

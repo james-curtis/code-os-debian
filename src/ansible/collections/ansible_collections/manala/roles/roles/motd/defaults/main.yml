@@ -1,0 +1,7 @@
+---
+
+# Scripts
+manala_motd_scripts_exclusive: false
+manala_motd_scripts_dir: /etc/update-motd.d
+manala_motd_scripts_defaults: {}
+manala_motd_scripts: []

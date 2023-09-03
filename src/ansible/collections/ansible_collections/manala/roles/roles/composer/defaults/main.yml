@@ -1,0 +1,21 @@
+---
+
+# Version
+manala_composer_version: ~
+
+# Install
+manala_composer_install_packages: ~
+manala_composer_install_packages_default:
+  - openssl
+  - ca-certificates
+  - unzip
+
+# Bin
+manala_composer_bin: /usr/local/bin/composer
+
+# Users - Auth
+manala_composer_users_auth_template: ~
+manala_composer_users_auth: []
+
+# Flags
+manala_composer: {}

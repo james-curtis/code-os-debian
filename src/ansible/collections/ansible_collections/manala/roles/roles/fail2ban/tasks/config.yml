@@ -1,0 +1,13 @@
+---
+
+- name: Config > Template
+  ansible.builtin.template:
+    src: "{{ manala_fail2ban_config_template | default('config/_default.j2', true) }}"
+    dest: "{{ manala_fail2ban_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_fail2ban_config_template
+    or manala_fail2ban_config
+  notify:
+    - Restart fail2ban

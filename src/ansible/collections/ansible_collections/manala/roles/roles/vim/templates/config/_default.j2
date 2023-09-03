@@ -1,0 +1,11 @@
+{%- set config = manala_vim_config -%}
+
+{%- if config is mapping -%}
+
+{{ config | manala.roles.vim_config }}
+
+{%- else -%}
+
+{{ config }}
+
+{%- endif -%}

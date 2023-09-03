@@ -1,0 +1,11 @@
+{%- set environment = manala_elasticsearch_environment -%}
+
+{%- if environment is mapping -%}
+
+{{ environment | manala.roles.environment }}
+
+{%- else -%}
+
+{{ environment }}
+
+{%- endif -%}

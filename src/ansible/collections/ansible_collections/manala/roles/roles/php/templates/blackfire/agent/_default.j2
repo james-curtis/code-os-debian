@@ -1,0 +1,12 @@
+{%- set config = manala_php_blackfire_agent_config -%}
+
+{%- if config is mapping -%}
+
+[blackfire]
+{{- config | manala.roles.php_blackfire_config_section }}
+
+{%- else -%}
+
+{{ config }}
+
+{%- endif -%}

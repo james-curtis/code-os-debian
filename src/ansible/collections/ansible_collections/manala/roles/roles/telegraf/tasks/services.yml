@@ -1,0 +1,8 @@
+---
+
+- name: Services > Services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - telegraf

@@ -1,0 +1,10 @@
+---
+
+- name: Restart supervisor
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - supervisor
+  # Deprecated
+  listen: supervisor restart

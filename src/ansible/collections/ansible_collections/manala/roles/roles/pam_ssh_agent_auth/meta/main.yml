@@ -1,0 +1,22 @@
+---
+
+dependencies: []
+
+galaxy_info:
+
+  role_name: pam_ssh_agent_auth
+  author: Manala
+  company: Manala
+  description: Handle pam ssh agent auth
+  license: MIT
+  min_ansible_version: 2.14.0
+  issue_tracker_url: https://github.com/manala/ansible-roles/issues
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+  galaxy_tags:
+    - system
+    - auth
+    - sudo

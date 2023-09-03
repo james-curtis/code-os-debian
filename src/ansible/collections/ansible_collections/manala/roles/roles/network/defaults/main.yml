@@ -1,0 +1,30 @@
+---
+
+# Install
+manala_network_install_packages: ~
+manala_network_install_packages_default:
+  - ifupdown
+
+# Hosts
+manala_network_hosts_file: /etc/hosts
+manala_network_hosts: {}
+
+# Resolver
+manala_network_resolver_config_file: /etc/resolv.conf
+manala_network_resolver_config_template: ~
+manala_network_resolver_config: ~
+
+# Interfaces config
+manala_network_interfaces_config_file: /etc/network/interfaces
+manala_network_interfaces_config_template: ~
+manala_network_interfaces_config: ~
+
+# Interfaces configs
+manala_network_interfaces_configs_exclusive: false
+manala_network_interfaces_configs_dir: /etc/network/interfaces.d
+manala_network_interfaces_configs_defaults: {}
+manala_network_interfaces_configs: []
+
+# Routing Tables
+manala_network_routing_tables_file: /etc/iproute2/rt_tables
+manala_network_routing_tables: {}

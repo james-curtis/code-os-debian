@@ -1,0 +1,11 @@
+{%- set config = manala_mysql_config -%}
+
+{%- if config is mapping -%}
+
+{{ config | manala.roles.mysql_config }}
+
+{%- else -%}
+
+{{ config }}
+
+{%- endif -%}

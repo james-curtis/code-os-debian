@@ -1,0 +1,24 @@
+---
+
+- name: Extensions > Availability
+  manala.roles.php_extension:
+    name: "{{ item.extension }}"
+    enabled: "{{ item.enabled }}"
+  loop: |
+    {{
+      query(
+        'manala.roles.php_extensions',
+        manala_php_extensions,
+        manala_php_extensions_available,
+        manala_php_sapis_available,
+        wantenabled=true,
+      )
+      +
+      query(
+        'manala.roles.php_extensions',
+        manala_php_extensions,
+        manala_php_extensions_available,
+        manala_php_sapis_available,
+        wantenabled=false,
+      )
+    }}

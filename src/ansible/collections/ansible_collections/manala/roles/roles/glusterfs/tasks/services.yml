@@ -1,0 +1,9 @@
+---
+
+- name: Services > Services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - glusterd

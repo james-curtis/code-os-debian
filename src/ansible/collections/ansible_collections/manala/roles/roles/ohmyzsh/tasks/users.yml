@@ -1,0 +1,40 @@
+---
+
+# Find the primary group of users whose group has not been manually defined
+- name: Users > Find primary groups
+  ansible.builtin.command:
+    cmd: id -g -n {{ item.user }}
+  loop: "{{
+    manala_ohmyzsh_users
+      | flatten
+      | manala.roles.staten(want='present')
+  }}"
+  when:
+    - item is not string
+    - item.group is not defined
+  register: __manala_ohmyzsh_users_groups
+  changed_when: false
+
+- name: Users > Zshrc templates
+  ansible.builtin.template:
+    src: "{{ item.template | default(manala_ohmyzsh_users_defaults.template | default('users/_default.j2', true), true) }}"
+    dest: "{{ item.dir | default('~' ~ item.user, true) }}/.zshrc"
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "0644"
+  loop: "{{
+    manala_ohmyzsh_users
+      | flatten
+      | manala.roles.staten(want='present')
+      | manala.roles.users_groups(__manala_ohmyzsh_users_groups.results)
+  }}"
+
+- name: Users > Shells
+  ansible.builtin.user:
+    name: "{{ item.user }}"
+    shell: /bin/zsh
+  loop: "{{
+    manala_ohmyzsh_users
+      | flatten
+      | manala.roles.staten(want='present')
+  }}"

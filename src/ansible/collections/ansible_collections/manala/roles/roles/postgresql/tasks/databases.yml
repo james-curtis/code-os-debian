@@ -1,0 +1,9 @@
+---
+
+- name: Databases > Create postgresql databases
+  community.postgresql.postgresql_db:
+    name: "{{ (item) if (item is string) else (item.database) }}"
+    state: "{{ item.state | default('present') }}"
+    owner: "{{ item.role | default(omit) }}"
+    login_host: "{{ manala_postgresql_login_host }}"
+  loop: "{{ manala_postgresql_databases }}"

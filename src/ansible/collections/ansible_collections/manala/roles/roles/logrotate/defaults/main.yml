@@ -1,0 +1,12 @@
+---
+
+# Install
+manala_logrotate_install_packages: ~
+manala_logrotate_install_packages_default:
+  - logrotate
+
+# Configs
+manala_logrotate_configs_exclusive: false
+manala_logrotate_configs_dir: /etc/logrotate.d
+manala_logrotate_configs_defaults: {}
+manala_logrotate_configs: []

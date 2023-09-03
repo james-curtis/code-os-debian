@@ -1,0 +1,41 @@
+# code: language=ansible
+---
+- name: 换源
+  hosts: all
+  tasks:
+    - name: "Create a new user"
+
+---
+- name: zsh | ohmyzsh | p10k
+
+---
+- name: 配置中文环境
+
+---
+- name: 配置常用工具
+
+---
+- name: c++
+
+
+---
+- name: gui | guifont
+
+---
+- name: conda | pdm
+
+---
+- name: nvm | node
+
+---
+- name: java | jenv
+
+---
+- name: docker
+
+---
+- name: TensorFlow
+
+---
+- name: pytorch
+

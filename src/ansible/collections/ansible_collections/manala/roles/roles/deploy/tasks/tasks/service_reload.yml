@@ -1,0 +1,11 @@
+---
+
+- name: Tasks / Sservice Reload
+  tags:
+    - manala_deploy
+  block:
+
+    - name: Tasks / Service Reload > {{ item.options | quote }}
+      ansible.builtin.service:
+        name: "{{ item.options }}"
+        state: reloaded

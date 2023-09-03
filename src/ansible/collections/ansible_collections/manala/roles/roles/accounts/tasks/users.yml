@@ -1,0 +1,154 @@
+---
+
+- name: Users > Users configuration
+  ansible.builtin.user:
+    name: "{{ (item) if (item is string) else (item.user) }}"
+    password: "{{ item.password | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    groups: "{{ item.groups | default([]) | join(',') }}"
+    append: "{{ not manala_accounts_users_groups_exclusive }}"
+    shell: "{{ item.shell | default(omit) }}"
+    createhome: "{{ item.createhome | default(true) | bool }}"
+    system: "{{ item.system | default(false) | bool }}"
+    uid: "{{ item.uid | default(omit) }}"
+    comment: "{{ item.comment | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{
+    manala_accounts_users
+      | flatten
+      | manala.roles.staten
+  }}"
+  loop_control:
+    label: |
+      {{ {
+        'user': (item) if (item is string) else (item.user),
+        'state': item.state | default('present'),
+      } }}
+
+- name: Users > Authorized keys
+  ansible.posix.authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ item.authorized_keys }}"
+    path: "{{ item.authorized_keys_file | default(omit) }}"
+    exclusive: true
+  loop: |
+    {{ query(
+      'manala.roles.accounts_users_authorized_keys',
+      manala_accounts_users
+        | flatten
+        | manala.roles.staten(want='present')
+    ) }}
+  loop_control:
+    label: |
+      {{ {
+        'user': item.user,
+      } }}
+
+# Find the primary group of users whose group has not been manually defined
+- name: Users > Find primary groups
+  ansible.builtin.command:
+    cmd: id -g -n {{ item.user }}
+  loop: "{{
+    manala_accounts_users
+      | flatten
+      | manala.roles.staten(want='present')
+      | selectattr('keys', 'sequence') | list
+  }}"
+  loop_control:
+    label: |
+      {{ {
+        'user': (item) if (item is string) else (item.user),
+      } }}
+  when:
+    - item is not string
+    - item.group is not defined
+  register: __manala_accounts_users_groups
+  changed_when: false
+
+- name: Users > Keys directory
+  ansible.builtin.file:
+    path: "~{{ item.user }}/.ssh"
+    state: directory
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "0700"
+  loop: "{{
+    manala_accounts_users
+      | flatten
+      | manala.roles.staten(want='present')
+      | selectattr('keys', 'sequence')
+      | manala.roles.users_groups(__manala_accounts_users_groups.results)
+  }}"
+  loop_control:
+    label: |
+      {{ {
+        'user': item.user,
+      } }}
+
+- name: Users > Keys
+  ansible.builtin.copy:
+    dest: "~{{ item.0.0.user }}/.ssh/{{ item.0.1.key | default('id_rsa') ~ {'private': '', 'public': '.pub'}[item.1] }}"
+    content: "{{ item.0.1[item.1] }}"
+    owner: "{{ item.0.0.user }}"
+    group: "{{ item.0.0.group | default(omit) }}"
+    mode: "{{ {'private': '0600', 'public': '0644'}[item.1] }}"
+  when: item.0.1[item.1] is defined
+  loop: "{{
+    manala_accounts_users
+      | flatten
+      | manala.roles.staten(want='present')
+      | selectattr('keys', 'sequence')
+      | manala.roles.users_groups(__manala_accounts_users_groups.results)
+      | subelements('keys')
+      | product(['private', 'public'])
+      | list
+  }}"
+  loop_control:
+    label: "{{ {
+      'user': item.0.0.user,
+      'key': item.0.1.key | default('id_rsa'),
+      'type': item.1,
+    } }}"
+
+- name: Users > Gpg keys
+  ansible.builtin.command:
+    cmd: >
+      su {{ item.0.0.user }} -c '
+        {%- if item.1 == 'public' -%}
+          gpg --list-keys {{ item.0.1.key }} || echo "{{ item.0.1.public }}" \
+            | gpg --import
+          {%- if item.0.1.trust | default(False) -%}{{- ' ' -}}
+            && echo "{{ item.0.1.public }}" \
+              | gpg --keyid-format long --with-fingerprint --with-colons - \
+              | sed -E -n -e "s/^fpr:::::::::([0-9A-F]+):$/\\1:6:/p" \
+              | gpg --import-ownertrust
+          {%- endif -%}
+        {%- else -%}
+          gpg --list-secret-keys {{ item.0.1.key }} || echo "{{ item.0.1.secret }}" \
+            | gpg --import --allow-secret-key-import
+        {%- endif -%}
+      '
+  when: item.0.1[item.1] is defined
+  register: __manala_accounts_users_gpg_keys
+  changed_when:
+    - __manala_accounts_users_gpg_keys.stderr
+    - |
+      'gpg: WARNING: no command supplied.' not in __manala_accounts_users_gpg_keys.stderr
+        or
+      'gpg: inserting ownertrust of' in __manala_accounts_users_gpg_keys.stderr
+  loop: "{{
+    manala_accounts_users
+      | flatten
+      | manala.roles.staten(want='present')
+      | selectattr('gpg_keys', 'sequence') | list
+      | subelements('gpg_keys')
+      | product(['public', 'secret'])
+      | list
+  }}"
+  loop_control:
+    label: "{{ {
+      'user': item.0.0.user,
+      'key': item.0.1.key,
+      'trust': item.0.1.trust | default(False),
+      'type': item.1,
+    } }}"

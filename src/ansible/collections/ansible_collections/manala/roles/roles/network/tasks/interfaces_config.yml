@@ -1,0 +1,13 @@
+---
+
+- name: Interfaces Config > Template
+  ansible.builtin.template:
+    src: "{{ manala_network_interfaces_config_template | default('interfaces_config/_default.j2', true) }}"
+    dest: "{{ manala_network_interfaces_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_network_interfaces_config_template
+    or manala_network_interfaces_config
+  notify:
+    - Restart networking

@@ -1,0 +1,42 @@
+{
+ "collection_info": {
+  "namespace": "manala",
+  "name": "roles",
+  "version": "3.6.0",
+  "authors": [
+   "Manala <contact@manala.io>"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "application",
+   "cloud",
+   "database",
+   "infrastructure",
+   "linux",
+   "monitoring",
+   "networking",
+   "security",
+   "storage",
+   "tools",
+   "debian"
+  ],
+  "description": "The flexible, robust, and web oriented toolbox for Ansible",
+  "license": [
+   "MIT"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://github.com/manala/ansible-roles",
+  "documentation": "https://github.com/manala/ansible-roles",
+  "homepage": "https://www.manala.io/",
+  "issues": "https://github.com/manala/ansible-roles/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "dcadb622fe787fddeda13249a60ff14e656e62d5d9a5e6406664b3a0e1891f56",
+  "format": 1
+ },
+ "format": 1
+}

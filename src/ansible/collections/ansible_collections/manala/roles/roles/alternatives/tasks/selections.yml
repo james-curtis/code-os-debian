@@ -1,0 +1,11 @@
+---
+
+- name: Selections > Alternatives
+  community.general.alternatives:
+    name: "{{ item.selection }}"
+    path: "{{ item.path }}"
+  loop: "{{
+    manala_alternatives_selections
+      | flatten
+      | manala.roles.staten(want='present')
+  }}"

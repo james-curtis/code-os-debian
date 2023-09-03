@@ -1,0 +1,23 @@
+---
+
+- name: Config > Template
+  ansible.builtin.template:
+    src: "{{ manala_postgresql_config_template | default('config/_default.j2', true) }}"
+    dest: "{{ manala_postgresql_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_postgresql_config_template
+    or manala_postgresql_config
+  register: __manala_postgresql_config_template_result
+
+- name: Config > Host-based authentication (hba) template
+  ansible.builtin.template:
+    src: "{{ manala_postgresql_config_hba_template | default('config_hba/_default.j2', true) }}"
+    dest: "{{ manala_postgresql_config_hba_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: manala_postgresql_config_hba_template
+    or manala_postgresql_config_hba
+  register: __manala_postgresql_config_hba_template_result
