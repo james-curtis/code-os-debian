@@ -1,0 +1,7 @@
+# File: sources.list
+
+deb http://{{ debian_apt_mirror }}/debian {{ ansible_distribution_release }} main
+deb-src http://{{ debian_apt_mirror }}/debian {{ ansible_distribution_release }} main
+
+deb http://{{ debian_apt_mirror }}/ {{ ansible_distribution_release }}/updates main
+deb-src http://{{ debian_apt_mirror }}/ {{ ansible_distribution_release }}/updates main

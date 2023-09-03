@@ -1,0 +1,73 @@
+language: bash
+sudo: true
+services:
+  - docker
+
+before_install:
+  - docker info
+  - docker version
+
+jobs:
+  include:
+
+    # ---- Build --------------------------------------------------------------
+
+    - stage: build
+      env:
+        - DISTRO="ubuntu1204"
+        - APT_MIRROR="http://free.nchc.org.tw/ubuntu"
+      script:
+        - echo "==> Build with Docker ..."
+        - docker build -f tests/Dockerfile.$DISTRO -t switch-apt-mirror:$DISTRO
+           . | tee build_result.$DISTRO
+        - echo "==> Run Test case ..."
+        - grep "deb $APT_MIRROR" build_result.$DISTRO
+
+    - stage: build
+      env:
+        - DISTRO="ubuntu1404"
+        - APT_MIRROR="http://free.nchc.org.tw/ubuntu"
+      script:
+        - echo "==> Build with Docker ..."
+        - docker build -f tests/Dockerfile.$DISTRO -t switch-apt-mirror:$DISTRO
+           . | tee build_result.$DISTRO
+        - echo "==> Run Test case ..."
+        - grep "deb $APT_MIRROR" build_result.$DISTRO
+
+    - stage: build
+      env:
+        - DISTRO="ubuntu1604"
+        - APT_MIRROR="http://free.nchc.org.tw/ubuntu"
+      script:
+        - echo "==> Build with Docker ..."
+        - docker build -f tests/Dockerfile.$DISTRO -t switch-apt-mirror:$DISTRO
+           . | tee build_result.$DISTRO
+        - echo "==> Run Test case ..."
+        - grep "deb $APT_MIRROR" build_result.$DISTRO
+
+    #- stage: build
+    #  env:
+    #    - DISTRO="debian8"
+    #    - APT_MIRROR="http://opensource.nchc.org.tw/debian"
+    #  script:
+    #    - echo "==> Build with Docker ..."
+    #    - docker build -f tests/Dockerfile.$DISTRO -t switch-apt-mirror:$DISTRO
+    #       . | tee build_result.$DISTRO
+    #    - echo "==> Run Test case ..."
+    #    - grep "deb $APT_MIRROR" build_result.$DISTRO
+
+    - stage: build
+      env:
+        - DISTRO="debian9"
+        - APT_MIRROR="http://opensource.nchc.org.tw/debian"
+      script:
+        - echo "==> Build with Docker ..."
+        - docker build -f tests/Dockerfile.$DISTRO -t switch-apt-mirror:$DISTRO
+           . | tee build_result.$DISTRO
+        - echo "==> Run Test case ..."
+        - grep "deb $APT_MIRROR" build_result.$DISTRO
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack:
+    secure: L5F2mdcTQUX907Ahkvx6o06QSOa9rUEn9ejUW6g9d9iGdk7Pyp79IGCZTICcWJ2UTnrXF4yrrgQbTdysW3Oud0xzw9ijT/TFeWARQfNhLIeLYtfVwQPMZRyTb8cqZN2rzDq9/GOpCZPah6mB9sVy6pdPDihc/C/E8VAlLdlQe6XkGk59xfuIF7KfXG+9Y9dnlWnZd21ES9gnf8ccK6mryZAO9x9vorJ2NKVZizIBPp8JkscynDQKT24HCIyK6XeEMQrUTgqIaba3D81R6kFuVwtRsQk8Y6PnjM8EeOAcWiIYAl+48zKUQrIoPQYuxh9WB04dzKuBWefoamS6lFiIYKIoNSIG/QLO6dHW1q360oN1qsKQDS+HON94PzZzIVlR5Klo72F/f42TcWfIeOceduQ4moySTBRUE39jk1Zvjrt1sm9eu4tOhArXl99iV9TGWqdVjgoljrd+27PUTfuEdMawsNkrloX5eidetMy55KhhSBz1mBtnCYJ7mzGJ5Pod+eOBczzbnYvIj/RhTRiGq/bt71QjNEh9owsLdZDH1wPnf5v5huHppcBYsjW4pxURpaSDbaMNoHvlVPn1lDxbYTgqoEbwB5JjtqXodjnnOyOoYPhHWXEsEW0vwb4JLcneZwUwwwFnqA7WQn/CAQwhnc+oFXpUYtHb7TGQXaqAUqs=

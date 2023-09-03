@@ -1,0 +1,23 @@
+#!/usr/bin/env ansible-playbook
+---
+
+- name: play 'switch-apt-mirror.ansible.role/provision.yml'
+  hosts: all
+
+  vars_files:
+    - defaults/main.yml
+
+  tasks:
+    - name: include tasks
+      include: tasks/main.yml
+
+    - name: review result
+      command: cat /etc/apt/sources.list
+      register: apt_sources_list
+      changed_when: False
+
+    - name: print process
+      debug:
+        msg: '{{ apt_sources_list.stdout_lines }}'
+
+# vim: ft=yaml.ansible :

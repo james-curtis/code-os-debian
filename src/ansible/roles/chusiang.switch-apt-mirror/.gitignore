@@ -1,0 +1,6 @@
+*.log
+*.retry
+.vagrant/
+ansible-retry/*
+build_result*
+roles/
