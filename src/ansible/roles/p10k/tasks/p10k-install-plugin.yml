@@ -1,0 +1,20 @@
+---
+- name: Get users information
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: present
+  register: ohmyzsh_users_register
+  loop: "{{ ohmyzsh_users }}"
+
+- name: Extract only 'name', 'home' and 'group' fields from ohmyzsh_users_register variable
+  ansible.builtin.set_fact:
+    ohmyzsh_users_information: "{{ ohmyzsh_users_information | default([]) + [{'name': item['name'], 'home': item['home'], 'group': item['group']}] }}"
+  no_log: true
+  loop: "{{ ohmyzsh_users_register.results }}"
+
+- name: Install Plugin
+  ansible.builtin.git:
+    repo: "{{ repo }}"
+    dest: "{{ item['home'] }}/.oh-my-zsh/custom/plugins/{{ name }}"
+    update: no
+  loop: "{{ ohmyzsh_users_information }}"

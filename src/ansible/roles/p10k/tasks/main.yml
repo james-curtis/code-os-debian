@@ -1,0 +1,31 @@
+---
+
+- ansible.builtin.import_role:
+    name: diodonfrost.ohmyzsh
+  become: true
+  vars:
+    ohmyzsh_theme: powerlevel10k/powerlevel10k
+    ohmyzsh_users: "{{ ohmyzsh_users }}"
+    ohmyzsh_plugins:
+      - git
+      - command-not-found
+      - colored-man-pages
+      - vi-mode
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+
+- name: Install zsh-autosuggestions
+  ansible.builtin.import_tasks:
+    file: p10k-setup-plugins.yml
+  vars:
+    plugins: 
+      - repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        name: zsh-autosuggestions
+      - repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        name: zsh-syntax-highlighting
+
+- ansible.builtin.import_role:
+    name: diodonfrost.p10k
+  vars:
+    zsh_plugin: ohmyzsh
+    p10k_prompt_style: rainbow

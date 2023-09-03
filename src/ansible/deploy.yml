@@ -1,41 +1,52 @@
 # code: language=ansible
 ---
-- name: 换源
+- name: deploy
   hosts: all
-  tasks:
-    - name: "Create a new user"
+  roles:
+    - role: chusiang.switch-apt-mirror
+      tags:
+        - apt-mirror
+      vars:
+        ubuntu_apt_mirror: mirror.nju.edu.cn
+        debian_apt_mirror: mirror.nju.edu.cn
 
----
-- name: zsh | ohmyzsh | p10k
+    - role: p10k
+      tags:
+        - p10k
 
----
-- name: 配置中文环境
-
----
-- name: 配置常用工具
-
----
-- name: c++
-
-
----
-- name: gui | guifont
-
----
-- name: conda | pdm
-
----
-- name: nvm | node
-
----
-- name: java | jenv
-
----
-- name: docker
-
----
-- name: TensorFlow
-
----
-- name: pytorch
+    # - role: zh-cn-lang
+    #   tags: 
+    #     - zh
+        
+    # - role: cpp-env
+    #   tags: 
+    #     - cpp
+        
+    # - role: gui-font
+    #   tags:
+    #     - gui-font
+        
+    # - role: conda-pdm
+    #   tags: 
+    #     - conda-pdm
+        
+    # - role: nvm
+    #   tags: 
+    #     - nvm
+        
+    # - role: jenv
+    #   tags:
+    #     - jenv
+        
+    # - role: docker
+    #   tags:
+    #     - docker
+        
+    # - role: tensorflow
+    #   tags: 
+    #     - tensorflow
+        
+    # - role: pytorch
+    #   tags: 
+    #     - pytorch
 
