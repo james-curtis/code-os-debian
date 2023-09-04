@@ -10,3 +10,4 @@
       - make
       - cmake
       - gdb
+    state: present

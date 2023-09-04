@@ -4,13 +4,16 @@
 - name: Install generic tools
   become: true
   ansible.builtin.package:
-    name:
-      - rsync
-      - iputils-ping
-      - bind9-dnsutils
-      - htop
-      - screen
-      - openssh-server
-      - tree
-      - iotop
-      - fio
+    name: "{{ item }}"
+    state: present
+  ignore_errors: true
+  loop:
+    - rsync
+    - iputils-ping
+    - bind9-dnsutils
+    - htop
+    - screen
+    - openssh-server
+    - tree
+    - iotop
+    - fio
