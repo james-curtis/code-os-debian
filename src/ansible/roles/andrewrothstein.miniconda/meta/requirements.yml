@@ -1,0 +1,5 @@
+---
+- name: andrewrothstein.bash
+  version: v1.1.11
+- name: andrewrothstein.unarchive-deps
+  version: v1.2.4

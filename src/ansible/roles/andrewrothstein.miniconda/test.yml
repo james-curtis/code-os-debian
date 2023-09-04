@@ -1,0 +1,7 @@
+---
+- hosts: all
+  roles:
+    - role: '{{ playbook_dir }}'
+      miniconda_make_sys_default: true
+      miniconda_pkg_update: false
+      miniconda_disable_auto_updates: true

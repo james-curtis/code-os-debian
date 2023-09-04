@@ -1,0 +1,33 @@
+---
+galaxy_info:
+  author: Andrew Rothstein
+  company: BlackRock
+  description: installs Miniconda
+  galaxy_tags:
+    - python
+    - conda
+    - miniconda
+  license:
+    - MIT
+  min_ansible_version: 2.0
+  platforms:
+    - name: Archlinux
+      versions:
+      - all
+    - name: Debian
+      versions:
+      - bullseye
+      - buster
+    - name: EL
+      versions:
+      - 8
+      - 9
+    - name: Fedora
+      versions:
+      - 36
+      - 37
+    - name: Ubuntu
+      versions:
+      - bionic
+      - focal
+      - jammy
