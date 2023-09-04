@@ -1,0 +1,24 @@
+# code: language=ansible
+---
+
+- name: Get users information
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: present
+  register: misc_users_register
+  loop: "{{ misc_users }}"
+
+- name: Append misc to .zshrc
+  ansible.builtin.blockinfile:
+    path: "{{ item['home'] }}/.zshrc"
+    block: |
+      # Enable xterm 256 color
+      if [[ "$TERM" == "xterm" ]]; then
+      export TERM=xterm-256color
+      fi
+
+      # set LANG
+      export LC_ALL=en_US.UTF-8
+      export LANG=en_US.UTF-8
+    marker: "# {mark} curits.misc ANSIBLE MANAGED BLOCK"
+  loop: "{{ misc_users_register.results }}"
