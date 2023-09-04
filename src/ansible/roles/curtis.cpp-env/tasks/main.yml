@@ -1,0 +1,12 @@
+# code: language=ansible
+---
+
+- name: Install cpp packages
+  become: true
+  ansible.builtin.package:
+    name:
+      - gcc
+      - g++
+      - make
+      - cmake
+      - gdb
