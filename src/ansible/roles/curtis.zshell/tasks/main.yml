@@ -10,7 +10,7 @@
     ohmyzsh_users: "{{ zshell_users }}"
     ohmyzsh_plugins: "{{ zshell_plugins }}"
 
-- name: Install Plugins
+- name: Install plugins
   ansible.builtin.include_tasks: git-plugin.yml
   loop: "{{ zshell_external_plugins }}"
   loop_control:
