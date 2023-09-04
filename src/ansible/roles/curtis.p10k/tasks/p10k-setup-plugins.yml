@@ -1,9 +1,0 @@
----
-
-- name: Setup Plugins
-  ansible.builtin.include_tasks:
-    file: p10k-install-plugin.yml
-  vars:
-    repo: "{{ item['repo'] }}"
-    name: "{{ item['name'] }}"
-  loop: "{{ plugins }}"

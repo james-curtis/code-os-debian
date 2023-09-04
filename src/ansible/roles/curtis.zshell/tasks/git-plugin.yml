@@ -1,0 +1,8 @@
+# code: language=ansible
+---
+- name: "Install {{ plugin_items['name'] }}"
+  ansible.builtin.git:
+    repo: "{{ plugin_items['repo'] }}"
+    dest: "{{ item['home'] }}/.oh-my-zsh/custom/plugins/{{ plugin_items['name'] }}"
+    update: false
+  loop: "{{ ohmyzsh_users_information }}"

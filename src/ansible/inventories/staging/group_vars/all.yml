@@ -1,9 +1,7 @@
 # code: language=ansible
 ---
 TENSOR_VERSION: 2.13.0
-GITCLONE_MIRROR: https://ghproxy.com/
-USER_PWD: linux
-USER_NAME: https://mirror.nju.edu.cn/anaconda/miniconda/Miniconda3-py39_23.5.2-0-Linux-x86_64.sh
+GPU_ENABLE: true
 CONDA_INSTALLER_URL: https://mirror.nju.edu.cn/anaconda/miniconda/Miniconda3-py39_23.5.2-0-Linux-x86_64.sh
 NVM_INSTALLER_URL: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh
 NVM_NODEJS_ORG_MIRROR: https://npmmirror.com/mirrors/node/
