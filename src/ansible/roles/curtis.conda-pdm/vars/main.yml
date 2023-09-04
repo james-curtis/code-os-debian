@@ -1,0 +1,4 @@
+# code: language=ansible
+---
+conda_dir: '{{ conda_parent_dir }}/anaconda'
+conda_bin: '{{ conda_dir }}/bin/conda'

@@ -1,0 +1,49 @@
+# code: language=ansible
+---
+
+- name: 'Conda init {{ item }} for {{ user_item["name"] }}'
+  ansible.builtin.blockinfile:
+    dest: "{{ user_item['home'] }}/.{{ item }}rc"
+    content: |
+      # >>> conda initialize >>>
+      # !! Contents within this block are managed by 'conda init' !!
+      __conda_setup="$('{{ conda_bin }}' 'shell.{{ item }}' 'hook' 2> /dev/null)"
+      if [ $? -eq 0 ]; then
+          eval "$__conda_setup"
+      else
+          if [ -f "{{ conda_dir }}/etc/profile.d/conda.sh" ]; then
+              . "{{ conda_dir }}/etc/profile.d/conda.sh"
+          else
+              export PATH="{{ conda_dir }}/bin:$PATH"
+          fi
+      fi
+      unset __conda_setup
+      # <<< conda initialize <<<
+    marker: "# {mark} ANSIBLE MANAGED BLOCK curtis.conda-pdm conda initialize"
+  loop: '{{ activate_conda_shells }}'
+
+- name: "Setup .condarc for {{ user_item['home'] }}"
+  ansible.builtin.template:
+    src: condarc.j2
+    dest: "{{ user_item['home'] }}/.condarc"
+    mode: '0644'
+
+- name: "Setup pip.conf for {{ user_item['home'] }}"
+  ansible.builtin.template:
+    src: pip.conf.j2
+    dest: "{{ user_item['home'] }}/.pip/pip.conf"
+    mode: '0644'
+
+- name: "Setup pdm mirror for {{ user_item['home'] }}"
+  ansible.builtin.template:
+    src: pdm-config.toml.j2
+    dest: "{{ user_item['home'] }}/.config/pdm/config.toml"
+    mode: '0644'
+
+- name: Configure path
+  ansible.builtin.blockinfile:
+    path: "{{ user_item['home'] }}/.{{ item }}rc"
+    content: |
+      export PATH=$HOME/.local/bin:$PATH
+    marker: "# {mark} ANSIBLE MANAGED BLOCK curtis.conda-pdm .local path"
+  loop: '{{ activate_conda_shells }}'

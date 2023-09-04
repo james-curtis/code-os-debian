@@ -1,0 +1,15 @@
+# code: language=ansible
+---
+
+pdm_installer_url: https://raw.githubusercontent.com/pdm-project/pdm/2.9.1/install-pdm.py
+pdm_installer_sha: sha256:965900c551b4d1ba5127ecf95c127c99b5a1cccef4c183a5ecf447e876fa3160
+
+conda_parent_dir: /usr/local
+effect_users:
+  - '{{ ansible_user_id }}'
+
+activate_conda_shells:
+  - zsh
+  - bash
+
+curl_downloaded_file_path: /tmp/install-pdm.py

@@ -1,0 +1,8 @@
+# code: language=ansible
+---
+
+- name: Setup miniconda
+  ansible.builtin.import_tasks: setup-conda.yml
+
+- name: Setup pdm
+  ansible.builtin.import_tasks: setup-pdm.yml

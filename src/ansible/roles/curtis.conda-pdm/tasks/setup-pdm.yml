@@ -1,0 +1,27 @@
+# code: language=ansible
+---
+
+- name: Get user info
+  ansible.builtin.user:
+    state: present
+    name: '{{ ansible_user_id }}'
+  register: pdm_ansible_user_register
+
+- name: Check installation for pdm
+  ansible.builtin.stat:
+    path: '{{ pdm_ansible_user_register["home"] }}/.local/bin'
+  register: pdm_bin_stat_register
+
+- name: Setup pdm
+  when: not pdm_bin_stat_register.stat.exists
+  block:
+    - name: Get pdm installer
+      ansible.builtin.get_url:
+        url: '{{ pdm_installer_url }}'
+        dest: '{{ curl_downloaded_file_path }}'
+        checksum: '{{ pdm_installer_sha }}'
+        mode: '0755'
+
+    - name: Install pdm...
+      ansible.builtin.command:
+        cmd: '{{ conda_dir }}/bin/python {{ curl_downloaded_file_path }}'

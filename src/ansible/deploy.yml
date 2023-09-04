@@ -26,17 +26,17 @@
       tags:
         generic-tools
 
-    # - role: cpp-env
-    #   tags:
-    #     - cpp
+    - role: curtis.cpp-env
+      tags:
+        - cpp
 
-    # - role: gui-font
-    #   tags:
-    #     - gui-font
+    - role: curtis.gui
+      tags:
+        - gui
 
-    # - role: conda-pdm
-    #   tags:
-    #     - conda-pdm
+    - role: curtis.conda-pdm
+      tags:
+        - conda-pdm
 
     # - role: nvm
     #   tags:

@@ -1,0 +1,30 @@
+# code: language=ansible
+---
+
+- name: Setup miniconda
+  ansible.builtin.import_role:
+    name: andrewrothstein.miniconda
+  vars:
+    miniconda_pkg_update: false
+    miniconda_mirror: https://mirror.nju.edu.cn/anaconda/miniconda
+    miniconda_parent_dir: '{{ conda_parent_dir }}'
+    miniconda_ver: '23.5.2-0'
+    miniconda_python_ver: '39'
+    miniconda_checksums:
+      '23.5.2-0':
+        '39':
+          # https://mirror.nju.edu.cn/anaconda/miniconda/Miniconda3-py39_23.5.2-0-Linux-x86_64.sh
+          Linux-x86_64: sha256:9829d95f639bd0053b2ed06d1204e60644617bf37dd5cc57523732e0e8d64516
+
+- name: Get user information
+  ansible.builtin.user:
+    state: present
+    name: '{{ item }}'
+  register: setup_users_register
+  loop: '{{ effect_users }}'
+
+- name: 'Setup conda post for {{ item["name"] }}'
+  ansible.builtin.include_tasks: setup-conda-post.yml
+  loop: '{{ setup_users_register.results }}'
+  loop_control:
+    loop_var: user_item
