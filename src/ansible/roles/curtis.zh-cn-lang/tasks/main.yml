@@ -1,0 +1,43 @@
+# code: language=ansible
+---
+
+- name: Get user information
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: present
+  register: zhcn_users_register
+  loop: "{{ zhch_users }}"
+
+- name: Write .cnrc
+  ansible.builtin.copy:
+    dest: "{{ item['home'] }}/.cnrc"
+    content: |
+      export LC_ALL=zh_CN.UTF-8
+      export LANG=zh_CN.UTF-8
+    mode: '0644'
+  loop: "{{ zhcn_users_register.results }}"
+
+- name: Install packages
+  become: true
+  ansible.builtin.package:
+    name:
+      - fonts-wqy-zenhei
+      - fonts-wqy-microhei
+      - locales
+      - dialog
+      - apt-utils
+      - man
+      - manpages-zh
+    state: present
+
+- name: Delete /etc/locale.gen
+  become: true
+  ansible.builtin.file:
+    path: /etc/locale.gen
+    state: absent
+
+- name: Configure language
+  become: true
+  ansible.builtin.command:
+    cmd: |
+      locale-gen --purge en_US.UTF-8 zh_CN.UTF-8
