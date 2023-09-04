@@ -1,6 +1,6 @@
 # code: language=ansible
 ---
-- name: deploy
+- name: Deploy
   hosts: all
   roles:
     - role: chusiang.switch-apt-mirror
@@ -22,35 +22,38 @@
       tags:
         - zh
 
+    - role: curtis.generic-tools
+      tags:
+        generic-tools
+
     # - role: cpp-env
-    #   tags: 
+    #   tags:
     #     - cpp
-        
+
     # - role: gui-font
     #   tags:
     #     - gui-font
-        
+
     # - role: conda-pdm
-    #   tags: 
+    #   tags:
     #     - conda-pdm
-        
+
     # - role: nvm
-    #   tags: 
+    #   tags:
     #     - nvm
-        
+
     # - role: jenv
     #   tags:
     #     - jenv
-        
+
     # - role: docker
     #   tags:
     #     - docker
-        
-    # - role: tensorflow
-    #   tags: 
-    #     - tensorflow
-        
-    # - role: pytorch
-    #   tags: 
-    #     - pytorch
 
+    # - role: tensorflow
+    #   tags:
+    #     - tensorflow
+
+    # - role: pytorch
+    #   tags:
+    #     - pytorch

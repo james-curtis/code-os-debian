@@ -1,0 +1,15 @@
+# code: language=ansible
+---
+
+- name: Install generic tools
+  ansible.builtin.package:
+    name:
+      - rsync
+      - iputils-ping
+      - bind9-dnsutils
+      - htop
+      - screen
+      - openssh-server
+      - tree
+      - iotop
+      - fio
