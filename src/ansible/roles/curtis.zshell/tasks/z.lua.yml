@@ -2,6 +2,7 @@
 ---
 
 - name: Install lua
+  become: true
   ansible.builtin.package:
     name: lua5.2
     state: present
@@ -10,13 +11,14 @@
   ansible.builtin.git:
     repo: https://github.com/skywind3000/z.lua.git
     dest: "{{ item['home'] }}/.z.lua"
-  loop: "{{ p10k_users_information }}"
+    update: false
+  loop: "{{ ohmyzsh_users_information }}"
 
 - name: Configure z.lua
   ansible.builtin.blockinfile:
     path: "{{ item['home'] }}/.zshrc"
     block: |
       # z.lua for zsh init
-      eval "$(lua ~/z.lua/z.lua  --init zsh once enhanced)"
+      eval "$(lua ~/.z.lua/z.lua  --init zsh once enhanced)"
     marker: "# {mark} roles/curtis.zshell ANSIBLE MANAGED BLOCK"
-  loop: "{{ p10k_users_information }}"
+  loop: "{{ ohmyzsh_users_information }}"

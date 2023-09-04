@@ -17,6 +17,7 @@
     loop_var: plugin_items
 
 - name: Install packages
+  become: true
   ansible.builtin.package:
     name: "{{ zshell_required_packages }}"
     state: present

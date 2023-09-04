@@ -14,10 +14,14 @@
       tags:
         - p10k
 
-    # - role: zh-cn-lang
-    #   tags: 
-    #     - zh
-        
+    - role: curtis.misc
+      tags:
+        - zh
+
+    - role: curtis.zh-cn-lang
+      tags:
+        - zh
+
     # - role: cpp-env
     #   tags: 
     #     - cpp
