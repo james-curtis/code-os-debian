@@ -1,0 +1,27 @@
+# code: language=ansible
+---
+
+- name: Setup gui
+  become: true
+  ansible.builtin.package:
+    name:
+      - x11-apps
+
+- name: Setup gui conf
+  become: true
+  ansible.builtin.copy:
+    src: local.conf
+    dest: /etc/fonts/
+    mode: '0644'
+
+- name: Setup gui font
+  become: true
+  ansible.builtin.copy:
+    src: fonts/
+    dest: /usr/share/fonts/custom/
+    mode: '0644'
+
+- name: Rebuild font cache
+  become: true
+  ansible.builtin.command:
+    cmd: fc-cache -f -v
