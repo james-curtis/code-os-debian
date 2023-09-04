@@ -16,3 +16,5 @@ zshell_external_plugins:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
   - name: zsh-syntax-highlighting
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+
+zshell_p10k_config_path: ~

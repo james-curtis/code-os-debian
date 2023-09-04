@@ -26,7 +26,7 @@
 
 - name: Override p10k.zsh with custom
   ansible.builtin.copy:
-    src: "p10k.zsh"
+    src: "{{ zshell_p10k_config_path | default('p10k.zsh', true) }}"
     dest: "{{ item['home'] }}/.p10k.zsh"
     owner: "{{ item['name'] }}"
     group: "{{ item['group'] }}"
