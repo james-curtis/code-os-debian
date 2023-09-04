@@ -10,7 +10,7 @@
         ubuntu_apt_mirror: mirror.nju.edu.cn
         debian_apt_mirror: mirror.nju.edu.cn
 
-    - role: p10k
+    - role: curtis.p10k
       tags:
         - p10k
 
