@@ -2,6 +2,7 @@
 ---
 
 - name: Install generic tools
+  become: true
   ansible.builtin.package:
     name:
       - rsync
