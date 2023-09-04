@@ -14,6 +14,7 @@
     content: |
       export LC_ALL=zh_CN.UTF-8
       export LANG=zh_CN.UTF-8
+      export LANGUAGE=zh_CN:en_US:
     mode: '0644'
   loop: "{{ zhcn_users_register.results }}"
 
@@ -29,12 +30,6 @@
       - man
       - manpages-zh
     state: present
-
-- name: Delete /etc/locale.gen
-  become: true
-  ansible.builtin.file:
-    path: /etc/locale.gen
-    state: absent
 
 - name: Configure language
   become: true
