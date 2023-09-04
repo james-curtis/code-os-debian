@@ -16,6 +16,14 @@
   loop_control:
     loop_var: plugin_items
 
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ zshell_required_packages }}"
+    state: present
+
+- name: Install z.lua
+  ansible.builtin.import_tasks: z.lua.yml
+
 - name: Install p10k
   ansible.builtin.import_role:
     name: diodonfrost.p10k

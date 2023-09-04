@@ -17,4 +17,7 @@ zshell_external_plugins:
   - name: zsh-syntax-highlighting
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
 
+zshell_required_packages:
+  - command-not-found
+
 zshell_p10k_config_path: ~
